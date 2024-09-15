@@ -1,0 +1,404 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documents Microservice API Documentation",
+    "version": "1.0.0",
+    "description": "Documentación microservicio de documentos"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/document/healthcheck": {
+      "get": {
+        "summary": "Health check endpoint",
+        "description": "Returns the health status of the API",
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "healthy"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/document": {
+      "get": {
+        "summary": "Get user documents",
+        "description": "Retrieves a list of documents associated with a user.",
+        "responses": {
+          "200": {
+            "description": "Successful response with documents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "description": "Indicates if there was an error",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Message related to the request",
+                      "example": ""
+                    },
+                    "body": {
+                      "type": "array",
+                      "description": "List of documents",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "createdAt": {
+                            "type": "number",
+                            "description": "Timestamp of document creation",
+                            "example": 1726361912161
+                          },
+                          "uid": {
+                            "type": "string",
+                            "description": "User identifier",
+                            "example": "12345"
+                          },
+                          "fileName": {
+                            "type": "string",
+                            "description": "Name of the file",
+                            "example": "Caso de estudio - Carpeta Ciudadana.pdf"
+                          },
+                          "id": {
+                            "type": "string",
+                            "description": "Unique document identifier",
+                            "example": "7UWK3Hw8xgx1RmvIk5GF"
+                          },
+                          "isAuthenticated": {
+                            "type": "boolean",
+                            "description": "Indicates if the document is authenticated",
+                            "example": false
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "Key of the document in the storage system",
+                            "example": "1726361912160-Caso+de+estudio+-+Carpeta+Ciudadana.pdf"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Upload a document",
+        "description": "Uploads a document and returns the document details.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The file to be uploaded"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "description": "Indicates if there was an error",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Response message",
+                      "example": "File uploaded successfully"
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique document identifier",
+                          "example": "eEkTIrF1z3rFgoYzuz2e"
+                        },
+                        "createdAt": {
+                          "type": "number",
+                          "description": "Timestamp when the document was uploaded",
+                          "example": 1726435199086
+                        },
+                        "isAuthenticated": {
+                          "type": "boolean",
+                          "description": "Indicates if the document is authenticated",
+                          "example": false
+                        },
+                        "uid": {
+                          "type": "string",
+                          "description": "User identifier",
+                          "example": "12345"
+                        },
+                        "fileName": {
+                          "type": "string",
+                          "description": "Name of the uploaded file",
+                          "example": "example.png"
+                        },
+                        "key": {
+                          "type": "string",
+                          "description": "Key of the document in the storage system",
+                          "example": "1726435199086-example.png"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/document/{id}": {
+      "get": {
+        "summary": "Get document by ID",
+        "description": "Retrieve information of a specific document by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the document",
+            "schema": {
+              "type": "string",
+              "example": "eEkTIrF1z3rFgoYzuz2e"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document information retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "eEkTIrF1z3rFgoYzuz2e"
+                        },
+                        "createdAt": {
+                          "type": "number",
+                          "example": 1726435199086
+                        },
+                        "uid": {
+                          "type": "string",
+                          "example": "12345"
+                        },
+                        "fileName": {
+                          "type": "string",
+                          "example": "example.png"
+                        },
+                        "isAuthenticated": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "key": {
+                          "type": "string",
+                          "example": "1726435199086-example.png"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a document by ID",
+        "description": "Delete the document with the specified ID and the associated file.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the document to be deleted",
+            "schema": {
+              "type": "string",
+              "example": "eEkTIrF1z3rFgoYzuz2e"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document and file deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "File 1726435199086-example.png deleted successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/document/{key}/url": {
+      "get": {
+        "summary": "Get pre-signed URL for document",
+        "description": "Retrieve a pre-signed URL for a document stored in the cloud storage, valid for one hour.",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "description": "The storage key of the document",
+            "schema": {
+              "type": "string",
+              "example": "1726435199086-example.png"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pre-signed URL retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "body": {
+                      "type": "string",
+                      "example": "https://myfs-aws-bucket.s3.us-east-1.amazonaws.com/12345/1726435199086-Diagrama%2Bdespliegue.drawio%2B%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA3FLD2Q5F7BLWVK2X%2F20240915%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240915T213642Z&X-Amz-Expires=3600&X-Amz-Signature=e7f2a7125b0d749503253ea9d83e25ee78774235ae6989eddae4d32913ce28ce&X-Amz-SignedHeaders=host&x-id=GetObject"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Document does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
