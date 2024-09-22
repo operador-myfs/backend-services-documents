@@ -34,11 +34,8 @@ jobs:
       - name: Extract version from package.json
         id: extract_version
         run: |
-          echo "#############hola"#############"
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          echo PACKAGE_VERSION
           DATE_VERSION="$PACKAGE_VERSION-$(date +%Y%m%d%H%M%S)"
-          echo DATE_VERSION
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
           echo "DATE_VERSION=$DATE_VERSION" >> $GITHUB_ENV
 
@@ -61,12 +58,15 @@ jobs:
 
       - name: Build and push Docker image with both tags
         run: |
-          docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} .
-          docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }} .
-          docker tag ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-          docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }}
-          docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }}
-          docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          echo "Using PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}"
+          echo "Using DATE_VERSION: ${{ env.DATE_VERSION }}"
+
+          # docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} .
+          # docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }} .
+          # docker tag ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          # docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }}
+          # docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }}
+          # docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
 
       - name: Logout from DockerHub
         run: docker logout
