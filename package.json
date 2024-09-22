@@ -1,5 +1,5 @@
 {
-  "name": "documents-microservice",
+  "name": "backend-services-documents",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
