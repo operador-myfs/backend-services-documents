@@ -39,6 +39,19 @@ jobs:
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
           echo "DATE_VERSION=$DATE_VERSION" >> $GITHUB_ENV
 
+      - name: Persist versions for next job
+        run: |
+          echo "$PACKAGE_VERSION" > version.txt
+          echo "$DATE_VERSION" > date_version.txt
+
+      - name: Upload artifacts for the next job
+        uses: actions/upload-artifact@v3
+        with:
+          name: version-files
+          path: |
+            version.txt
+            date_version.txt
+
   docker-build:
     runs-on: ubuntu-latest
     needs: build
@@ -46,6 +59,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Download version artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: version-files
+
+      - name: Load version variables
+        id: load_version
+        run: |
+          PACKAGE_VERSION=$(cat version.txt)
+          DATE_VERSION=$(cat date_version.txt)
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          echo "DATE_VERSION=$DATE_VERSION" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
