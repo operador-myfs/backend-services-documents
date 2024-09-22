@@ -87,12 +87,12 @@ jobs:
           echo "Using PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}"
           echo "Using DATE_VERSION: ${{ env.DATE_VERSION }}"
 
-          # docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} .
-          # docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }} .
-          # docker tag ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
-          # docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }}
-          # docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }}
-          # docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} .
+          docker build -t ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }} .
+          docker tag ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.PACKAGE_VERSION }}
+          docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.DATE_VERSION }}
+          docker push ${{ env.DOCKERHUB_USER }}/${{ env.DOCKER_IMAGE_NAME }}:latest
 
       - name: Logout from DockerHub
         run: docker logout
