@@ -34,8 +34,11 @@ jobs:
       - name: Extract version from package.json
         id: extract_version
         run: |
+          echo "#############hola"#############"
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo PACKAGE_VERSION
           DATE_VERSION="$PACKAGE_VERSION-$(date +%Y%m%d%H%M%S)"
+          echo DATE_VERSION
           echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
           echo "DATE_VERSION=$DATE_VERSION" >> $GITHUB_ENV
 
