@@ -5,11 +5,11 @@ import upload from './middlewares/upload';
 
 const router = Router();
 
-router.get('/healthcheck', authorization, documentController.healthcheck);
-router.get('/', authorization, documentController.getDocumentsByUser);
-router.post('/', upload.single('file'), authorization, documentController.uploadFile);
-router.get('/:id', authorization, documentController.getDocumentById);
-router.delete('/:id', authorization, documentController.deleteDocumentById);
-router.get('/:key/url', authorization, documentController.getDocumentUrl);
+router.get('/actuator/health', documentController.healthcheck);
+router.get('/document/', authorization, documentController.getDocumentsByUser);
+router.post('/document/', upload.single('file'), authorization, documentController.uploadFile);
+router.get('/document/:id', authorization, documentController.getDocumentById);
+router.delete('/document/:id', authorization, documentController.deleteDocumentById);
+router.get('/document/:key/url', authorization, documentController.getDocumentUrl);
 
 export default router;

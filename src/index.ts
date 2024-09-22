@@ -13,7 +13,7 @@ const whitelist = ['/'];
 const options: cors.CorsOptions = {
   origin: whitelist,
 };
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 const env = process.env.NODE_ENV || 'production';
 
 const app: Application = express();
@@ -33,7 +33,7 @@ app.disable('x-powered-by');
 
 app.use('/document/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/document', router);
+app.use('/', router);
 
 createServer(app).listen({ port }, () => {
   console.log(`Documents microservice ready in port ${port}`);
