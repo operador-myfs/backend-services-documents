@@ -1,5 +1,6 @@
 //COLLECTIONS NAMES
 export const DOCUMENTS_COLLECTION = 'documents';
+export const TRANSFER_COLLECTION = 'transfer';
 
 //AWS
 export const AWS_BUCKET = process.env.AWS_BUCKET;

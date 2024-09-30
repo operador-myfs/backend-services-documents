@@ -7,6 +7,9 @@ import { getDocument } from '../services/getDocument';
 import { getPresignedUrl } from '../services/getPresignedUrl';
 import { deleteDocument } from '../services/deleteDocument';
 import { deleteFileFromS3 } from '../services/deleteFileFromS3';
+import transferSchema from '../schemas/transferCitizen';
+import { transferQueueSender } from '../services/transferQueueSender';
+import { saveTransferTransaction } from '../services/saveTransferTransaction';
 
 const healthcheck = async (_req: Request, res: Response) => {
   return response({
@@ -146,6 +149,47 @@ const uploadFile = async (req: Request, res: Response) => {
   }
 };
 
+const transferCitizen = async (req: Request, res: Response) => {
+  const result = transferSchema.validateTransfer(req.body);
+  if (result.success === false) {
+    return response({
+      res,
+      status: 400,
+      error: true,
+      message: JSON.parse(result.error.message),
+    });
+  }
+
+  const { success, message, doc } = await saveTransferTransaction(result.data);
+  if (!success) {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: message,
+    });
+  }
+
+  try {
+    await transferQueueSender(doc.transactionId, result.data);
+
+    return response({
+      res,
+      status: 200,
+      error: false,
+      message: 'transferencia registrada con éxito',
+    });
+  } catch (error) {
+    console.log(error);
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: 'Error al registrar transferencia',
+    });
+  }
+};
+
 const documentController = {
   healthcheck,
   getDocumentById,
@@ -153,6 +197,7 @@ const documentController = {
   getDocumentsByUser,
   getDocumentUrl,
   uploadFile,
+  transferCitizen,
 };
 
 export default documentController;
