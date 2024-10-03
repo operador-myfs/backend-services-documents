@@ -6,6 +6,7 @@ import upload from './middlewares/upload';
 const router = Router();
 
 router.get('/actuator/health', documentController.healthcheck);
+router.get('/operators', documentController.getOperatorsList);
 router.get('/document/', authorization, documentController.getDocumentsByUser);
 router.post('/document/', upload.single('file'), authorization, documentController.uploadFile);
 router.get('/document/:id', authorization, documentController.getDocumentById);

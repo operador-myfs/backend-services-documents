@@ -7,6 +7,7 @@ import { getDocument } from '../services/getDocument';
 import { getPresignedUrl } from '../services/getPresignedUrl';
 import { deleteDocument } from '../services/deleteDocument';
 import { deleteFileFromS3 } from '../services/deleteFileFromS3';
+import { getOperators } from '../services/getOperators';
 
 const healthcheck = async (_req: Request, res: Response) => {
   return response({
@@ -106,6 +107,26 @@ const getDocumentUrl = async (req: Request, res: Response) => {
   }
 };
 
+const getOperatorsList = async (req: Request, res: Response) => {
+  const { success, operators } = await getOperators();
+  if (success) {
+    return response({
+      res,
+      status: 200,
+      error: false,
+      message: '',
+      body: operators,
+    });
+  } else {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: 'Error al obtener operadores',
+    });
+  }
+};
+
 const uploadFile = async (req: Request, res: Response) => {
   if (!req.file) {
     return response({
@@ -153,6 +174,7 @@ const documentController = {
   getDocumentsByUser,
   getDocumentUrl,
   uploadFile,
+  getOperatorsList,
 };
 
 export default documentController;

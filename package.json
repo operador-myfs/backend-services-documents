@@ -28,6 +28,7 @@
     "@aws-sdk/s3-request-presigner": "3.651.1",
     "amqplib": "0.10.4",
     "aws-secrets-environment": "1.0.0",
+    "axios": "1.7.7",
     "cors": "2.8.5",
     "express": "4.21.0",
     "firebase-admin": "12.5.0",

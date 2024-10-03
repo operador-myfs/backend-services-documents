@@ -9,9 +9,10 @@ import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
 
-const whitelist = ['/'];
 const options: cors.CorsOptions = {
-  origin: whitelist,
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 const port = process.env.PORT || 8080;
 const env = process.env.NODE_ENV || 'production';
