@@ -25,7 +25,6 @@ const authorization = async (req: Request, res: Response, next: NextFunction) =>
   }
 
   const token = req.headers.authorization.replace('Bearer ', '');
-  console.log(token);
   jwt.verify(
     token,
     getKey,
@@ -34,7 +33,6 @@ const authorization = async (req: Request, res: Response, next: NextFunction) =>
     },
     (err, decoded) => {
       if (err) {
-        console.log('error', err);
         return response({
           res,
           status: 401,
