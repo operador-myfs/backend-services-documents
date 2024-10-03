@@ -25,8 +25,6 @@ export async function updateEnvironmentVariables(): Promise<void> {
   try {
     const awsSecrets = await getSecret('operador/prod/documents');
 
-    process.env.AWS_BUCKET = awsSecrets.AWS_BUCKET;
-    process.env.AWS_REGION = awsSecrets.AWS_REGION;
     process.env.AWS_ACCESS_KEY = awsSecrets.AWS_ACCESS_KEY;
     process.env.AWS_SECRET_ACCESS_KEY = awsSecrets.AWS_SECRET_ACCESS_KEY;
 
