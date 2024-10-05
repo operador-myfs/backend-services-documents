@@ -17,6 +17,7 @@ export const getDocuments = async (uid: string): Promise<{ success: boolean; mes
       docs,
     };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       message: 'Error when list documents',

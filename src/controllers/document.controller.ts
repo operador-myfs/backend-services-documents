@@ -8,6 +8,11 @@ import { getPresignedUrl } from '../services/getPresignedUrl';
 import { deleteDocument } from '../services/deleteDocument';
 import { deleteFileFromS3 } from '../services/deleteFileFromS3';
 import { getOperators } from '../services/getOperators';
+import { callAuthenticateDocument } from '../services/callAuthenticateDocument';
+import { updateAuthenticateDocument } from '../services/updateAuthenticateDocument';
+import transferSchema from '../schemas/transfer';
+import { getDocumentsUrl } from '../services/getDocumentsUrl';
+import { transferUser } from '../services/transferUser';
 
 const healthcheck = async (_req: Request, res: Response) => {
   return response({
@@ -54,6 +59,55 @@ const getDocumentById = async (req: Request, res: Response) => {
       status,
       error: true,
       message: message,
+    });
+  }
+};
+
+const authenticateDocument = async (req: Request, res: Response) => {
+  const { success: successDocument, message: messageDocument, status, doc } = await getDocument(req.params.id, req.body.uid);
+  if (!successDocument) {
+    return response({
+      res,
+      status,
+      error: true,
+      message: messageDocument,
+    });
+  }
+
+  const { success: successUrl, message: messageUrl, url } = await getPresignedUrl(`${req.body.uid}/${req.params.key}`);
+  if (!successUrl) {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageUrl,
+    });
+  }
+
+  const { success: successCall, message: messageCall } = await callAuthenticateDocument(parseInt(req.body.uid), url, doc.fileName);
+  if (!successCall) {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageCall,
+    });
+  }
+
+  const { success: successUpdateDoc, message: messageUpdateDoc } = await updateAuthenticateDocument(doc.id);
+  if (successUpdateDoc) {
+    return response({
+      res,
+      status: 200,
+      error: false,
+      message: messageUpdateDoc,
+    });
+  } else {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageUpdateDoc,
     });
   }
 };
@@ -167,14 +221,71 @@ const uploadFile = async (req: Request, res: Response) => {
   }
 };
 
+const transfer = async (req: Request, res: Response) => {
+  const result = transferSchema.validateTransfer(req.body);
+  if (result.success === false) {
+    return response({
+      res,
+      status: 400,
+      error: true,
+      message: JSON.parse(result.error.message),
+    });
+  }
+
+  const { success: successDocument, message: messageDocument, docs } = await getDocuments(req.body.uid);
+  if (!successDocument) {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageDocument,
+    });
+  }
+
+  const { success: successUrls, message: messageUrls, documents } = await getDocumentsUrl(req.body.uid, docs);
+  if (!successUrls) {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageUrls,
+    });
+  }
+
+  const { success: successTransfer, message: messageTransfer } = await transferUser(
+    req.body.uid,
+    result.data.citizenName,
+    result.data.citizenEmail,
+    documents,
+    result.data.transferAPIURL
+  );
+  if (successTransfer) {
+    return response({
+      res,
+      status: 200,
+      error: false,
+      message: messageTransfer,
+    });
+  } else {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageTransfer,
+    });
+  }
+};
+
 const documentController = {
   healthcheck,
   getDocumentById,
+  authenticateDocument,
   deleteDocumentById,
   getDocumentsByUser,
   getDocumentUrl,
   uploadFile,
   getOperatorsList,
+  transfer,
 };
 
 export default documentController;
