@@ -42,7 +42,11 @@ const authorization = async (req: Request, res: Response, next: NextFunction) =>
       }
 
       const uid = (decoded as any)['custom:id'];
+      const email = (decoded as any).email;
+      const name = (decoded as any).name;
       req.body.uid = uid;
+      req.body.email = email;
+      req.body.name = name;
       next();
     }
   );

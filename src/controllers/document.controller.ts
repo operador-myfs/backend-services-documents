@@ -254,8 +254,8 @@ const transfer = async (req: Request, res: Response) => {
 
   const { success: successTransfer, message: messageTransfer } = await transferUser(
     req.body.uid,
-    result.data.citizenName,
-    result.data.citizenEmail,
+    req.body.name,
+    req.body.email,
     documents,
     result.data.transferAPIURL
   );

@@ -11,7 +11,7 @@ import swaggerDocument from './swagger.json';
 
 const options: cors.CorsOptions = {
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 const port = process.env.PORT || 8080;

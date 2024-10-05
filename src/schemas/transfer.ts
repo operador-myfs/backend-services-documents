@@ -1,8 +1,6 @@
 import z from 'zod';
 
 const TransferCitizen = z.object({
-  citizenName: z.string(),
-  citizenEmail: z.string(),
   transferAPIURL: z.string(),
 });
 

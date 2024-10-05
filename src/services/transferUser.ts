@@ -30,7 +30,7 @@ export const transferUser = async (
       citizenName,
       citizenEmail,
       Documents,
-      confirmationURL: 'https://micarpeta.com/api/confirmTransfer',
+      confirmationURL: 'https://ocrf9nzqde.execute-api.us-east-1.amazonaws.com/prod/interoperabilidad/api/confirmTransfer',
     };
 
     await axios.post(transferAPIURL, { ...body });
