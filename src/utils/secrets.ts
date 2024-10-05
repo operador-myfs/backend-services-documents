@@ -27,6 +27,7 @@ export async function updateEnvironmentVariables(): Promise<void> {
 
     process.env.AWS_ACCESS_KEY = awsSecrets.AWS_ACCESS_KEY;
     process.env.AWS_SECRET_ACCESS_KEY = awsSecrets.AWS_SECRET_ACCESS_KEY;
+    process.env.COGNITO_POOL_ID = awsSecrets.COGNITO_POOL_ID;
 
     process.env.FIREBASE_PROJECT_ID = awsSecrets.FIREBASE_PROJECT_ID;
     process.env.FIREBASE_CLIENT_EMAIL = awsSecrets.FIREBASE_CLIENT_EMAIL;
