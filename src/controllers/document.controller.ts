@@ -13,6 +13,7 @@ import { updateAuthenticateDocument } from '../services/updateAuthenticateDocume
 import transferSchema from '../schemas/transfer';
 import { getDocumentsUrl } from '../services/getDocumentsUrl';
 import { transferUser } from '../services/transferUser';
+import { unregisterCitizen } from '../services/unregisterCitizen';
 
 const healthcheck = async (_req: Request, res: Response) => {
   return response({
@@ -249,6 +250,16 @@ const transfer = async (req: Request, res: Response) => {
       status: 500,
       error: true,
       message: messageUrls,
+    });
+  }
+
+  const { success: successUnregister, message: messageUnregister } = await unregisterCitizen(req.body.uid);
+  if (!successUnregister) {
+    return response({
+      res,
+      status: 500,
+      error: true,
+      message: messageUnregister,
     });
   }
 
