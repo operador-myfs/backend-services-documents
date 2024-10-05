@@ -41,8 +41,8 @@ const authorization = async (req: Request, res: Response, next: NextFunction) =>
         });
       }
 
-      const email = (decoded as any).email.toLowerCase();
-      req.body.uid = email;
+      const uid = (decoded as any)['custom:id'];
+      req.body.uid = uid;
       next();
     }
   );
